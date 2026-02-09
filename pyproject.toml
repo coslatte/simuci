@@ -7,7 +7,8 @@ name = "simuci"
 version = "0.1.0"
 description = "ICU discrete-event simulation engine — distribution sampling, patient clustering, and statistical validation."
 readme = "README.md"
-license = { file = "LICENSE" }
+license = { text = "MIT" }
+license-files = []
 requires-python = ">=3.9,<3.12"
 authors = [{ name = "SimUCI Team" }]
 keywords = ["icu", "simulation", "discrete-event", "simpy", "healthcare"]
@@ -60,4 +61,3 @@ warn_unused_configs = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-
