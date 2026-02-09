@@ -11,6 +11,9 @@ jobs:
   # ── 1. Build ────────────────────────────────────────────────
   release-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
 
     steps:
       - uses: actions/checkout@v4
@@ -38,6 +41,7 @@ jobs:
     permissions:
       # mandatory for trusted publishing
       id-token: write
+      actions: read
 
     environment:
       name: testpypi
@@ -64,6 +68,7 @@ jobs:
     permissions:
       # mandatory for trusted publishing
       id-token: write
+      actions: read
 
     environment:
       name: pypi
