@@ -37,34 +37,33 @@ exp = Experiment(
     percent=3,
 )
 
-# Single replication
-result = single_run(exp)
+# Single replication (requires centroids CSV)
+result = single_run(exp, centroids_path="path/to/centroids.csv")
 print(result)
 # {'Tiempo Pre VAM': 5, 'Tiempo VAM': 89, 'Tiempo Post VAM': 168, 'Estadia UCI': 262, 'Estadia Post UCI': 45}
 
 # Multiple replications → DataFrame
-df = multiple_replication(exp, n_reps=200)
+df = multiple_replication(exp, n_reps=200, centroids_path="path/to/centroids.csv")
 print(df.describe())
 ```
 
 ## Using Your Own Centroid Data
 
-By default, `simuci` ships with **synthetic sample centroids** for demonstration.
-To use real trained centroids, pass the path explicitly:
+You must pass the path to your centroid CSV explicitly:
 
 ```python
 from simuci import single_run, Experiment
 
 exp = Experiment(age=55, ..., validate=False)
 
-# Point to your real centroids CSV
+# Point to your centroids CSV
 result = single_run(exp, centroids_path="path/to/real_centroids.csv")
 ```
 
 The centroids CSV must have:
 
 - An index column (cluster IDs: 0, 1, 2)
-- At least 12 numeric columns (features used for nearest-centroid classification)
+- At least 11 numeric columns (features used for nearest-centroid classification)
 
 You can also use the loader directly:
 

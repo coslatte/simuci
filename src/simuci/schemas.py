@@ -15,7 +15,7 @@ from typing import TypedDict
 
 
 class CentroidRow(TypedDict):
-    """Schema for a single centroid row (3 clusters × 18 numeric columns)."""
+    """Schema for a single centroid row (3 clusters x 18 numeric columns)."""
 
     cluster_id: int
     features: list[float]
@@ -33,47 +33,6 @@ class CentroidSchema:
 
     n_clusters: int = 3
     n_total_columns: int = 18
-    n_used_columns: int = 12
+    n_used_columns: int = 11
     index_column: str = ""
     feature_columns: list[str] = field(default_factory=lambda: [str(i) for i in range(18)])
-
-
-# ---------------------------------------------------------------------------
-# Patient CSV schema
-# ---------------------------------------------------------------------------
-
-
-@dataclass(frozen=True)
-class PatientSchema:
-    """Describes the expected columns in a patient data CSV.
-
-    Used by :mod:`simuci.procesar_datos` loaders.
-    """
-
-    date_columns: list[str] = field(
-        default_factory=lambda: [
-            "fecha_ingreso",
-            "fecha_egreso",
-            "fecha_ing_uci",
-            "fecha_egr_uci",
-        ]
-    )
-    numeric_columns: list[str] = field(
-        default_factory=lambda: [
-            "tiempo_vam",
-            "estadia_uci",
-        ]
-    )
-    categorical_columns: list[str] = field(
-        default_factory=lambda: [
-            "diagnostico_preuci",
-            "sala_egreso",
-            "evolucion",
-        ]
-    )
-
-    @property
-    def all_columns(self) -> list[str]:
-        """Return every expected column name."""
-
-        return self.date_columns + self.numeric_columns + self.categorical_columns

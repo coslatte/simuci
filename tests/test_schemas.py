@@ -1,30 +1,16 @@
-"""Tests for simuci.schemas — PatientSchema."""
+"""Tests for simuci.schemas — CentroidSchema."""
 
 from __future__ import annotations
 
-from simuci.schemas import PatientSchema
+from simuci.schemas import CentroidSchema
 
 
-class TestPatientSchema:
-    """Verify PatientSchema structure."""
+class TestCentroidSchema:
+    """Verify CentroidSchema defaults."""
 
-    def test_date_columns(self) -> None:
-        schema = PatientSchema()
-        assert len(schema.date_columns) == 4
-        assert "fecha_ingreso" in schema.date_columns
-
-    def test_numeric_columns(self) -> None:
-        schema = PatientSchema()
-        assert "tiempo_vam" in schema.numeric_columns
-        assert "estadia_uci" in schema.numeric_columns
-
-    def test_categorical_columns(self) -> None:
-        schema = PatientSchema()
-        assert "diagnostico_preuci" in schema.categorical_columns
-
-    def test_all_columns(self) -> None:
-        schema = PatientSchema()
-        all_cols = schema.all_columns
-        assert len(all_cols) == 4 + 2 + 3  # date + numeric + categorical
-        # No duplicates
-        assert len(all_cols) == len(set(all_cols))
+    def test_defaults(self) -> None:
+        schema = CentroidSchema()
+        assert schema.n_clusters == 3
+        assert schema.n_total_columns == 18
+        assert schema.n_used_columns == 11
+        assert len(schema.feature_columns) == 18

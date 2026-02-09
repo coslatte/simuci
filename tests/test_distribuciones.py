@@ -69,22 +69,16 @@ class TestSamplers:
 class TestCentroidLoading:
     """Verify centroid loading and caching."""
 
-    def test_load_bundled_centroids(self) -> None:
+    def test_cache_returns_same_object(self, centroids_csv: str) -> None:
         clear_centroid_cache()
-        centroids = _load_centroids()
-        assert centroids.shape == (3, 12)
-        assert centroids.dtype == np.float64
-
-    def test_cache_returns_same_object(self) -> None:
-        clear_centroid_cache()
-        a = _load_centroids()
-        b = _load_centroids()
+        a = _load_centroids(centroids_csv)
+        b = _load_centroids(centroids_csv)
         assert a is b
 
-    def test_clear_cache_reloads(self) -> None:
-        a = _load_centroids()
+    def test_clear_cache_reloads(self, centroids_csv: str) -> None:
+        a = _load_centroids(centroids_csv)
         clear_centroid_cache()
-        b = _load_centroids()
+        b = _load_centroids(centroids_csv)
         # Same values but different object after cache clear
         np.testing.assert_array_equal(a, b)
 
@@ -96,28 +90,28 @@ class TestCentroidLoading:
 class TestClustering:
     """Verify nearest-centroid classification."""
 
-    def test_returns_int(self) -> None:
-        cluster = clustering(55, 11, 0, 0, 0, 20, 5, 1, 100, 50, 10)
+    def test_returns_int(self, centroids_csv: str) -> None:
+        cluster = clustering(55, 11, 0, 0, 0, 20, 5, 1, 100, 50, 10, centroids_path=centroids_csv)
         assert isinstance(cluster, int)
 
-    def test_returns_valid_cluster_id(self) -> None:
-        cluster = clustering(55, 11, 0, 0, 0, 20, 5, 1, 100, 50, 10)
+    def test_returns_valid_cluster_id(self, centroids_csv: str) -> None:
+        cluster = clustering(55, 11, 0, 0, 0, 20, 5, 1, 100, 50, 10, centroids_path=centroids_csv)
         assert cluster in (0, 1, 2)
 
-    def test_deterministic_for_same_inputs(self) -> None:
+    def test_deterministic_for_same_inputs(self, centroids_csv: str) -> None:
         """Clustering is deterministic (no randomness)."""
         args = (55, 11, 0, 0, 0, 20, 5, 1, 100, 50, 10)
-        results = [clustering(*args) for _ in range(10)]
+        results = [clustering(*args, centroids_path=centroids_csv) for _ in range(10)]
         assert len(set(results)) == 1
 
-    def test_va_group_derivation(self) -> None:
+    def test_va_group_derivation(self, centroids_csv: str) -> None:
         """va=2 or va=3 → va_group=2; else va_group=1.
 
         Changing va between 1 and 2 should change the feature vector
         and potentially the cluster assignment.
         """
-        c1 = clustering(55, 11, 0, 0, 0, 20, 5, 1, 100, 50, 10)
-        c2 = clustering(55, 11, 0, 0, 0, 20, 5, 2, 100, 50, 10)
+        c1 = clustering(55, 11, 0, 0, 0, 20, 5, 1, 100, 50, 10, centroids_path=centroids_csv)
+        c2 = clustering(55, 11, 0, 0, 0, 20, 5, 2, 100, 50, 10, centroids_path=centroids_csv)
         # Both should be valid (we can't guarantee different clusters
         # but the function should not crash)
         assert c1 in (0, 1, 2)

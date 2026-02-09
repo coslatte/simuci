@@ -38,8 +38,8 @@ class TestExperimentVariables:
             assert isinstance(label, str) and len(label) > 0
 
     def test_n_clustering_features(self) -> None:
-        """N_CLUSTERING_FEATURES = 11 CSV features + 1 derived va_group."""
-        assert len(EXPERIMENT_VARIABLES_FROM_CSV) + 1 == N_CLUSTERING_FEATURES
+        """N_CLUSTERING_FEATURES matches the CSV feature count used by UCI."""
+        assert len(EXPERIMENT_VARIABLES_FROM_CSV) == N_CLUSTERING_FEATURES
 
 
 class TestLimits:

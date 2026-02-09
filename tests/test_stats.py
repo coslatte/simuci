@@ -135,6 +135,3 @@ class TestStatsUtils:
         std = np.array([10.0])
         lower, upper = StatsUtils.confidence_interval(mean, std, n=50)
         np.testing.assert_almost_equal(mean - lower, upper - mean)
-
-    def test_backward_compat_alias(self) -> None:
-        assert StatsUtils.confidenceinterval is StatsUtils.confidence_interval

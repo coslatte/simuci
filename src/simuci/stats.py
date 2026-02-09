@@ -55,8 +55,15 @@ class Wilcoxon:
 
     def test(self) -> None:
         """Run the test and populate :attr:`statistic` and :attr:`p_value`."""
+        x = np.asarray(self.x)
+        y = np.asarray(self.y)
 
-        res = wilcoxon(self.x, self.y)
+        if x.shape == y.shape and np.allclose(x, y):
+            self.statistic = 0.0
+            self.p_value = 1.0
+            return
+
+        res = wilcoxon(x, y)
         self.statistic = float(res.statistic)  # type: ignore[union-attr]
         self.p_value = float(res.pvalue)  # type: ignore[union-attr]
 
@@ -254,11 +261,17 @@ class SimulationMetrics:
             simulated_sample = np.random.choice(simulation_data, min_size, replace=False)
 
         try:
+            kwargs: dict = {}
             try:
                 from scipy.stats import PermutationMethod
-                result = anderson_ksamp([real_sample, simulated_sample], method=PermutationMethod())
+                kwargs["method"] = PermutationMethod()
             except ImportError:
-                result = anderson_ksamp([real_sample, simulated_sample])
+                pass
+
+            try:
+                result = anderson_ksamp([real_sample, simulated_sample], variant="midrank", **kwargs)
+            except TypeError:
+                result = anderson_ksamp([real_sample, simulated_sample], **kwargs)
             statistic = float(result.statistic)  # type: ignore[union-attr]
             significance = float(getattr(result, "significance_level", float("nan")))
         except Exception:
@@ -332,8 +345,8 @@ class StatsUtils:
 
     @staticmethod
     def confidence_interval(
-        mean: np.ndarray,
-        std: np.ndarray,
+        mean: ArrayLike1D,
+        std: ArrayLike1D,
         n: int,
         confidence: float = 0.95,
     ) -> tuple[np.ndarray, np.ndarray]:
@@ -348,13 +361,13 @@ class StatsUtils:
         Returns:
             ``(lower_bound, upper_bound)`` arrays.
         """
+        mean = np.asarray(mean)
+        std = np.asarray(std)
+
         if np.all(std == 0):
             return mean, mean
 
-        z = norm.ppf(1.0 - (1.0 - confidence) / 2.0)
+        t_value = t_dist.ppf(1 - (1 - confidence) / 2, n - 1)
         sem = std / np.sqrt(n)
 
-        return mean - z * sem, mean + z * sem
-
-    # Keep old name as alias for backward compatibility
-    confidenceinterval = confidence_interval
+        return mean - t_value * sem, mean + t_value * sem

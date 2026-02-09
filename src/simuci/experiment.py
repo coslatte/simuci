@@ -90,13 +90,13 @@ class Experiment:
 def single_run(
     experiment: Experiment,
     *,
-    centroids_path: str | Path | None = None,
+    centroids_path: str | Path,
 ) -> dict[str, int]:
     """Execute one simulation replication and return the result dict.
 
     Args:
         experiment: Configured :class:`Experiment` instance.
-        centroids_path: Optional path to a custom centroids CSV.
+        centroids_path: Path to a custom centroids CSV.
     """
 
     env = simpy.Environment()
@@ -129,7 +129,7 @@ def multiple_replication(
     n_reps: int = 100,
     as_int: bool = True,
     *,
-    centroids_path: str | Path | None = None,
+    centroids_path: str | Path,
 ) -> pd.DataFrame:
     """Run *n_reps* independent replications and return results as a DataFrame.
 
@@ -137,7 +137,7 @@ def multiple_replication(
         experiment: Configured :class:`Experiment` instance.
         n_reps: Number of independent replications.
         as_int: If ``True`` cast every value to ``int64``; otherwise keep ``float64``.
-        centroids_path: Optional path to a custom centroids CSV.
+        centroids_path: Path to a custom centroids CSV.
 
     Returns:
         A :class:`~pandas.DataFrame` with one row per replication.

@@ -9,7 +9,6 @@ never needs to unpack numpy arrays.
 
 from __future__ import annotations
 
-import importlib.resources
 import logging
 from pathlib import Path
 
@@ -117,21 +116,15 @@ _centroid_cache: dict[str, np.ndarray] = {}
 """Per-path cache replacing the old ``@lru_cache`` to allow different paths."""
 
 
-def _load_centroids(path: str | Path | None = None) -> np.ndarray:
+def _load_centroids(path: str | Path) -> np.ndarray:
     """Load and cache the centroid matrix from a CSV file.
 
     Args:
         path: Path to the centroids CSV.
-        When ``None``, falls back to the bundled sample centroids shipped with the package.
 
     Returns:
         Numpy array of shape ``(n_clusters, N_CLUSTERING_FEATURES)``.
     """
-
-    if path is None:
-        ref = importlib.resources.files("simuci") / "examples" / "sample_centroids.csv"
-        with importlib.resources.as_file(ref) as p:
-            path = p
 
     key = str(path)
     if key in _centroid_cache:
@@ -178,9 +171,11 @@ def clustering(
     centroid using Euclidean distance.
 
     Args:
-        centroids_path: Optional path to a custom centroids CSV.
-            When ``None``, uses the bundled sample data.
+        centroids_path: Path to the centroids CSV (required).
     """
+
+    if centroids_path is None:
+        raise ValueError("centroids_path is required to run clustering")
 
     va_group: int = 2 if va in (2, 3) else 1
 

@@ -23,7 +23,7 @@ _LBL_POST_UCI: str = EXPERIMENT_VARIABLES_LABELS[4]     # "Estadia Post UCI"
 class Simulation:
     """SimPy process that models an ICU patient's journey through VAM stages."""
 
-    def __init__(self, experiment: "Experiment", cluster: int) -> None:
+    def __init__(self, experiment: Experiment, cluster: int) -> None:
         self.experiment = experiment
         self.cluster = cluster
 

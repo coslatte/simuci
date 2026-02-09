@@ -18,7 +18,7 @@ Data loading:
     CentroidLoader
 
 CSV utilities:
-    procesar_datos  (sub-module)
+    process_data  (sub-module)
 """
 
 from __future__ import annotations

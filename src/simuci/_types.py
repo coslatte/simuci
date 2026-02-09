@@ -16,7 +16,7 @@ ClusterId: TypeAlias = int
 SimulationResult: TypeAlias = dict[str, int]
 """Single-replication result mapping variable labels to hour values."""
 
-ArrayLike1D: TypeAlias = Union[Sequence[float], np.ndarray]
+ArrayLike1D: TypeAlias = Union[Sequence[float], np.ndarray, Any]
 """Anything that can act as a 1-D array of floats."""
 
 Metric: TypeAlias = Union[tuple[float, ...], dict[str, Any]]

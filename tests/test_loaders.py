@@ -28,7 +28,7 @@ class TestCentroidLoader:
     def test_load_valid_csv(self, valid_csv: str) -> None:
         loader = CentroidLoader()
         centroids = loader.load(valid_csv)
-        assert centroids.shape == (3, 12)
+        assert centroids.shape == (3, 11)
         assert centroids.dtype == np.float64
 
     def test_load_nonexistent_raises(self) -> None:
@@ -37,7 +37,7 @@ class TestCentroidLoader:
             loader.load("/no/such/file.csv")
 
     def test_too_few_columns_raises(self, tmp_path: Path) -> None:
-        """CSV with fewer than 12 numeric columns should fail."""
+        """CSV with fewer than 11 numeric columns should fail."""
         df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
         path = tmp_path / "small.csv"
         df.to_csv(path, index=False)
@@ -56,17 +56,7 @@ class TestCentroidLoader:
 
         loader = CentroidLoader()
         centroids = loader.load(str(path))
-        assert centroids.shape == (5, 12)
-
-    def test_bundled_sample_centroids(self) -> None:
-        """The package ships sample_centroids.csv and it loads correctly."""
-        import importlib.resources
-
-        ref = importlib.resources.files("simuci") / "examples" / "sample_centroids.csv"
-        with importlib.resources.as_file(ref) as p:
-            loader = CentroidLoader()
-            centroids = loader.load(p)
-            assert centroids.shape == (3, 12)
+        assert centroids.shape == (5, 11)
 
 
 class TestCentroidSchema:
@@ -76,5 +66,5 @@ class TestCentroidSchema:
         schema = CentroidSchema()
         assert schema.n_clusters == 3
         assert schema.n_total_columns == 18
-        assert schema.n_used_columns == 12
+        assert schema.n_used_columns == 11
         assert len(schema.feature_columns) == 18

@@ -39,62 +39,62 @@ class TestExperiment:
 class TestSingleRun:
     """single_run produces a valid result dict."""
 
-    def test_returns_dict(self, experiment: Experiment) -> None:
-        result = single_run(experiment)
+    def test_returns_dict(self, experiment: Experiment, centroids_csv: str) -> None:
+        result = single_run(experiment, centroids_path=centroids_csv)
         assert isinstance(result, dict)
 
-    def test_result_keys_match_labels(self, experiment: Experiment) -> None:
-        result = single_run(experiment)
+    def test_result_keys_match_labels(self, experiment: Experiment, centroids_csv: str) -> None:
+        result = single_run(experiment, centroids_path=centroids_csv)
         assert set(result.keys()) == set(EXPERIMENT_VARIABLES_LABELS)
 
-    def test_result_values_are_int(self, experiment: Experiment) -> None:
-        result = single_run(experiment)
+    def test_result_values_are_int(self, experiment: Experiment, centroids_csv: str) -> None:
+        result = single_run(experiment, centroids_path=centroids_csv)
         for v in result.values():
             assert isinstance(v, int)
 
-    def test_uci_stay_is_non_negative(self, experiment: Experiment) -> None:
-        result = single_run(experiment)
+    def test_uci_stay_is_non_negative(self, experiment: Experiment, centroids_csv: str) -> None:
+        result = single_run(experiment, centroids_path=centroids_csv)
         assert result["Estadia UCI"] >= 0
 
-    def test_vam_leq_uci(self, experiment: Experiment) -> None:
+    def test_vam_leq_uci(self, experiment: Experiment, centroids_csv: str) -> None:
         """VAM time should never exceed UCI stay."""
         for _ in range(20):
-            result = single_run(experiment)
+            result = single_run(experiment, centroids_path=centroids_csv)
             assert result["Tiempo VAM"] <= result["Estadia UCI"]
 
-    def test_time_components_sum(self, experiment: Experiment) -> None:
+    def test_time_components_sum(self, experiment: Experiment, centroids_csv: str) -> None:
         """pre_vam + vam + post_vam == uci stay."""
         for _ in range(20):
-            r = single_run(experiment)
+            r = single_run(experiment, centroids_path=centroids_csv)
             assert r["Tiempo Pre VAM"] + r["Tiempo VAM"] + r["Tiempo Post VAM"] == r["Estadia UCI"]
 
 
 class TestMultipleReplication:
     """multiple_replication produces a proper DataFrame."""
 
-    def test_returns_dataframe(self, experiment: Experiment) -> None:
-        df = multiple_replication(experiment, n_reps=50)
+    def test_returns_dataframe(self, experiment: Experiment, centroids_csv: str) -> None:
+        df = multiple_replication(experiment, n_reps=50, centroids_path=centroids_csv)
         assert isinstance(df, pd.DataFrame)
 
-    def test_correct_shape(self, experiment: Experiment) -> None:
+    def test_correct_shape(self, experiment: Experiment, centroids_csv: str) -> None:
         n = 50
-        df = multiple_replication(experiment, n_reps=n)
+        df = multiple_replication(experiment, n_reps=n, centroids_path=centroids_csv)
         assert df.shape == (n, len(EXPERIMENT_VARIABLES_LABELS))
 
-    def test_columns_match_labels(self, experiment: Experiment) -> None:
-        df = multiple_replication(experiment, n_reps=50)
+    def test_columns_match_labels(self, experiment: Experiment, centroids_csv: str) -> None:
+        df = multiple_replication(experiment, n_reps=50, centroids_path=centroids_csv)
         assert list(df.columns) == EXPERIMENT_VARIABLES_LABELS
 
-    def test_as_int_dtype(self, experiment: Experiment) -> None:
-        df = multiple_replication(experiment, n_reps=50, as_int=True)
+    def test_as_int_dtype(self, experiment: Experiment, centroids_csv: str) -> None:
+        df = multiple_replication(experiment, n_reps=50, as_int=True, centroids_path=centroids_csv)
         for col in df.columns:
             assert df[col].dtype == "int64"
 
-    def test_as_float_dtype(self, experiment: Experiment) -> None:
-        df = multiple_replication(experiment, n_reps=50, as_int=False)
+    def test_as_float_dtype(self, experiment: Experiment, centroids_csv: str) -> None:
+        df = multiple_replication(experiment, n_reps=50, as_int=False, centroids_path=centroids_csv)
         for col in df.columns:
             assert df[col].dtype == "float64"
 
-    def test_no_nans(self, experiment: Experiment) -> None:
-        df = multiple_replication(experiment, n_reps=50)
+    def test_no_nans(self, experiment: Experiment, centroids_csv: str) -> None:
+        df = multiple_replication(experiment, n_reps=50, centroids_path=centroids_csv)
         assert not df.isna().any().any()

@@ -37,10 +37,10 @@ EXPERIMENT_VARIABLES_LABELS: list[str] = [
 ]
 """Human-readable labels for the five simulation output variables."""
 
-N_CLUSTERING_FEATURES: int = 12
-"""Dimensionality of the feature vector used by :func:`simuci.distribuciones.clustering`.
+N_CLUSTERING_FEATURES: int = 11
+"""Number of centroid features used for nearest-centroid classification.
 
-The 11 CSV features plus the derived ``va_group`` column.
+Matches the 11 input variables from the CSV data used by the UCI app.
 """
 
 # ---------------------------------------------------------------------------
