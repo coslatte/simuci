@@ -68,7 +68,7 @@ El CSV de centroides debe tener:
 También puedes usar el cargador directamente:
 
 ```python
-from simuci.loaders import CentroidLoader
+from simuci.io.loaders import CentroidLoader
 
 loader = CentroidLoader()
 centroids = loader.load("ruta/a/centroides.csv")  # devuelve numpy array

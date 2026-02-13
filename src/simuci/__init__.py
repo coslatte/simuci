@@ -30,7 +30,7 @@ from simuci.analysis.stats import Friedman, SimulationMetrics, StatsUtils, Wilco
 from simuci.validation.validators import validate_experiment_inputs, validate_simulation_runs
 from simuci.io.loaders import CentroidLoader
 
-__version__ = "0.1.0"
+__version__ = "1.0.1"
 
 __all__ = [
     # Core

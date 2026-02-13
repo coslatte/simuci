@@ -70,7 +70,7 @@ The centroids CSV must have:
 You can also use the loader directly:
 
 ```python
-from simuci.loaders import CentroidLoader
+from simuci.io.loaders import CentroidLoader
 
 loader = CentroidLoader()
 centroids = loader.load("path/to/centroids.csv")  # returns numpy array
