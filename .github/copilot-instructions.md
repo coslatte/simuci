@@ -44,6 +44,15 @@ You are an expert Python developer specializing in Discrete-Event Simulation (DE
 
 ## Documentation
 
-- The project is **Bilingual (English/Spanish)**.
-- If you modify code that has documentation overrides (e.g., `README.md` and `README.es.md`), **update BOTH**.
-- Keep technical terms consistent (e.g., "Length of Stay" / "Estancia", "Arrival Rate" / "Tasa de Llegada").
+- All new and updated documentation must be written in **English only**.
+- Before implementing changes, read the project documentation as working context:
+  - `README.md`
+  - `docs/index.md`
+  - `docs/architecture.md`
+  - `docs/function-profile.md` (if present)
+- Keep technical terms consistent across code, tests, and docs.
+
+## Agent Workflow Requirement
+
+- Future coding agents must review the documentation files listed above before making edits.
+- Any new architectural behavior should be reflected in documentation in the same change set.

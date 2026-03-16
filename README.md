@@ -1,8 +1,15 @@
 # simuci
 
-> [Spanish docs](README.es.md)
-
 ICU discrete-event simulation engine — distribution sampling, patient clustering, and statistical validation.
+
+## Key Functionalities
+
+- Builds patient-level simulation scenarios through `Experiment`.
+- Executes one run with `single_run` and many runs with `multiple_replication`.
+- Classifies each patient using nearest-centroid clustering with user-provided centroid CSV data.
+- Generates cluster-specific ICU timelines (`pre_vam`, `vam`, `post_vam`, `uci`, `post_uci`).
+- Validates simulation quality with Wilcoxon, Friedman, coverage, RMSE/MAE/MAPE, KS, and AD tests.
+- Validates experiment parameters and simulation run counts before execution.
 
 ## Installation
 
@@ -127,6 +134,20 @@ Skip validation with `validate=False` if you've already validated externally.
 
 Project map (core vs. validation, I/O, statistics, tooling):
 [docs/architecture.md](docs/architecture.md)
+
+## Function Profile
+
+Complete function-by-function reference for every source module:
+[docs/function-profile.md](docs/function-profile.md)
+
+## Contributing
+
+Contributions are welcome through issue proposals, technical feedback, and documentation improvements.
+
+- Public direct commits are closed.
+- To appeal or request contribution access, contact: `gabrielpazruiz02@gmail.com`.
+- For implementation work, open an issue with problem statement, expected behavior, and validation plan.
+- Keep all new documentation and code comments in English.
 
 ## License
 

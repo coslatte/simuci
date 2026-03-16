@@ -2,6 +2,14 @@
 
 This project separates the **simulation engine** (core) from **input/output**, **validation**, **statistics**, and **development tooling**.
 
+## Functional Flow (Summary)
+
+1. Build an `Experiment` with validated patient inputs.
+2. Classify the patient with nearest-centroid clustering using centroid CSV data.
+3. Run the `Simulation` process in SimPy to generate ICU timeline outputs.
+4. Repeat runs with `multiple_replication` for distribution-level analysis.
+5. Evaluate simulation quality with `SimulationMetrics`, Wilcoxon, and Friedman tests.
+
 ## Core (runtime / essentials)
 
 - [src/simuci/core/experiment.py](src/simuci/core/experiment.py)
@@ -62,3 +70,8 @@ This project separates the **simulation engine** (core) from **input/output**, *
 - [src/simuci/__init__.py](src/simuci/__init__.py)
   - Re-exports "stable" symbols so users can do `from simuci import ...`.
   - Rule of thumb: what is not re-exported here is considered internal/advanced.
+
+## Function-Level Reference
+
+For a complete one-by-one function profile, see:
+[docs/function-profile.md](function-profile.md)
